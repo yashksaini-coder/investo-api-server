@@ -9,6 +9,7 @@ colorama==0.4.6
 distro==1.9.0
 dnspython==2.7.0
 docstring_parser==0.16
+duckduckgo_search==7.3.2
 email_validator==2.2.0
 fastapi==0.115.8
 fastapi-cli==0.0.7
@@ -32,6 +33,7 @@ numpy==2.2.3
 pandas==2.2.3
 peewee==3.17.9
 platformdirs==4.3.6
+primp==0.12.1
 pydantic==2.10.6
 pydantic-settings==2.7.1
 pydantic_core==2.27.2
