@@ -10,30 +10,30 @@ from dotenv import load_dotenv
 # Load API key from .env file
 
 load_dotenv(dotenv_path=".env")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
 
 groq_client = groq.Client(api_key=GROQ_API_KEY)
 
 if not GROQ_API_KEY:
     raise ValueError("Please provide a GROQ API key")
-    exit(1)
     
 app = FastAPI()
 # Web searching agent
 web_search_agent = Agent(
     name="web_agent",
     role="search the web for information based on the user given input",
-    model=Groq(id="llama-3.3-70b-versatile",api_key=GROQ_API_KEY),
+    model=Groq(id="llama-3.3-70b-specdec",api_key=GROQ_API_KEY),
     tools=[
         DuckDuckGoTools(search=True, news=True),
 
     ],
+    structured_outputs=False,
     markdown=True,
 )
 financial_agent = Agent(
     name="financial_agent",
     role="get financial information",
-    model=Groq(id="llama-3.3-70b-versatile",api_key=GROQ_API_KEY),
+    model=Groq(id="llama-3.3-70b-specdec",api_key=GROQ_API_KEY),
     tools=[
         YFinanceTools(stock_price=True,
                     analyst_recommendations=True,
@@ -57,7 +57,7 @@ financial_agent = Agent(
 
 multi_ai = Agent(
     team=[web_search_agent, financial_agent],
-    model=Groq(id="llama-3.3-70b-versatile",api_key=GROQ_API_KEY),
+    model=Groq(id="llama-3.3-70b-specdec",api_key=GROQ_API_KEY),
     markdown=True,
 )
 
@@ -72,7 +72,7 @@ def ask(query: str):
     try:
         # response = financial_agent.print_response(query)
         response: RunResponse = multi_ai.run(query)
-        answer = response.to_json()
+        answer = response.content
 
         return {"question": query, "answer": answer}
     
