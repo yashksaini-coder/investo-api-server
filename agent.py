@@ -10,7 +10,7 @@ from dotenv import load_dotenv
 # Load API key from .env file
 
 load_dotenv(dotenv_path=".env")
-GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
+GROQ_API_KEY = os.environ.get("api_key")
 
 groq_client = groq.Client(api_key=GROQ_API_KEY)
 
@@ -26,6 +26,11 @@ web_search_agent = Agent(
     tools=[
         DuckDuckGoTools(search=True, news=True),
 
+    ],
+    instructions=[
+        "You are a very professional web search AI agent",
+        "your job is to search the web for information based on the user given input",
+        "provide exact information to the user available on the web",
     ],
     structured_outputs=False,
     markdown=True,
